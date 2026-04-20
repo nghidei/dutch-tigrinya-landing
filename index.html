@@ -1,0 +1,1572 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="NL Training — Nederlandse taal app speciaal voor Tigrinya-sprekers. Voor COA, ISK scholen en gemeenten." />
+  <title>NL Training — Nederlands voor Tigrinya-sprekers</title>
+  <style>
+    /* ── Reset & Base ───────────────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --brown:      #8B5E3C;
+      --brown-dark: #6B4426;
+      --brown-light:#B07D54;
+      --cream:      #FAF7F2;
+      --cream-dark: #F0EAE0;
+      --ink:        #1A1208;
+      --ink-muted:  #5C4A32;
+      --green:      #2D6A4F;
+      --green-light:#52B788;
+      --white:      #FFFFFF;
+      --border:     #E8DDD0;
+
+      --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+      --font-serif: Georgia, 'Times New Roman', serif;
+
+      --radius-sm: 8px;
+      --radius-md: 16px;
+      --radius-lg: 24px;
+      --radius-xl: 32px;
+      --radius-full: 9999px;
+
+      --shadow-sm: 0 1px 3px rgba(26,18,8,0.08), 0 1px 2px rgba(26,18,8,0.04);
+      --shadow-md: 0 4px 16px rgba(26,18,8,0.10), 0 2px 6px rgba(26,18,8,0.06);
+      --shadow-lg: 0 12px 40px rgba(26,18,8,0.12), 0 4px 12px rgba(26,18,8,0.06);
+
+      --transition: 200ms ease;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--cream);
+      color: var(--ink);
+      line-height: 1.6;
+      font-size: 16px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    img { display: block; max-width: 100%; }
+    a { color: inherit; text-decoration: none; }
+    button { font-family: inherit; cursor: pointer; border: none; background: none; }
+    ul { list-style: none; }
+
+    /* ── Utilities ──────────────────────────────────────────────────────────── */
+    .container {
+      width: 100%;
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .section-label {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--brown);
+      background: rgba(139,94,60,0.1);
+      padding: 5px 12px;
+      border-radius: var(--radius-full);
+      margin-bottom: 16px;
+    }
+
+    .section-title {
+      font-family: var(--font-serif);
+      font-size: clamp(28px, 4vw, 44px);
+      font-weight: 700;
+      line-height: 1.15;
+      color: var(--ink);
+      letter-spacing: -0.02em;
+    }
+
+    .section-sub {
+      font-size: 18px;
+      color: var(--ink-muted);
+      line-height: 1.65;
+      max-width: 560px;
+    }
+
+    /* ── Buttons ────────────────────────────────────────────────────────────── */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 28px;
+      border-radius: var(--radius-full);
+      font-size: 15px;
+      font-weight: 600;
+      transition: all var(--transition);
+      cursor: pointer;
+    }
+
+    .btn-primary {
+      background: var(--brown);
+      color: var(--white);
+      box-shadow: 0 2px 8px rgba(139,94,60,0.3);
+    }
+    .btn-primary:hover {
+      background: var(--brown-dark);
+      box-shadow: 0 4px 16px rgba(139,94,60,0.4);
+      transform: translateY(-1px);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--ink);
+      border: 1.5px solid var(--border);
+    }
+    .btn-outline:hover {
+      background: var(--cream-dark);
+      border-color: var(--brown-light);
+      transform: translateY(-1px);
+    }
+
+    .btn-green {
+      background: var(--green);
+      color: var(--white);
+      box-shadow: 0 2px 8px rgba(45,106,79,0.3);
+    }
+    .btn-green:hover {
+      background: #245a42;
+      box-shadow: 0 4px 16px rgba(45,106,79,0.4);
+      transform: translateY(-1px);
+    }
+
+    /* ── Nav ────────────────────────────────────────────────────────────────── */
+    .nav {
+      position: fixed;
+      top: 16px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: calc(100% - 32px);
+      max-width: 1120px;
+      z-index: 100;
+      background: rgba(250,247,242,0.92);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      padding: 12px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: var(--shadow-md);
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      font-size: 17px;
+      color: var(--ink);
+    }
+
+    .nav-logo-icon {
+      width: 34px;
+      height: 34px;
+      background: var(--brown);
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 16px;
+      font-weight: 800;
+      font-family: var(--font-serif);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .nav-link {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--ink-muted);
+      padding: 6px 14px;
+      border-radius: var(--radius-full);
+      transition: all var(--transition);
+    }
+    .nav-link:hover { color: var(--ink); background: var(--cream-dark); }
+
+    .nav-cta {
+      padding: 8px 20px;
+      font-size: 14px;
+    }
+
+    /* ── Hero ───────────────────────────────────────────────────────────────── */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding: 120px 0 80px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -200px;
+      right: -200px;
+      width: 700px;
+      height: 700px;
+      background: radial-gradient(circle, rgba(139,94,60,0.08) 0%, transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: -100px;
+      left: -100px;
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, rgba(45,106,79,0.06) 0%, transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .hero-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+
+    .hero-eyebrow {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 24px;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--green);
+      color: white;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 5px 12px;
+      border-radius: var(--radius-full);
+    }
+
+    .hero-title {
+      font-family: var(--font-serif);
+      font-size: clamp(36px, 5vw, 60px);
+      font-weight: 700;
+      line-height: 1.08;
+      color: var(--ink);
+      letter-spacing: -0.03em;
+      margin-bottom: 20px;
+    }
+
+    .hero-title span {
+      color: var(--brown);
+    }
+
+    .hero-tigrinya {
+      font-size: 22px;
+      color: var(--brown);
+      font-weight: 500;
+      margin-bottom: 12px;
+      letter-spacing: 0.01em;
+    }
+
+    .hero-sub {
+      font-size: 18px;
+      color: var(--ink-muted);
+      line-height: 1.65;
+      margin-bottom: 36px;
+      max-width: 480px;
+    }
+
+    .hero-ctas {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .hero-trust {
+      margin-top: 48px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .hero-trust-text {
+      font-size: 13px;
+      color: var(--ink-muted);
+      font-weight: 500;
+    }
+
+    .trust-badges {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .trust-badge {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--ink-muted);
+      background: var(--cream-dark);
+      border: 1px solid var(--border);
+      padding: 4px 12px;
+      border-radius: var(--radius-full);
+    }
+
+    /* Phone mockup */
+    .hero-visual {
+      display: flex;
+      justify-content: center;
+      position: relative;
+    }
+
+    .phone-wrap {
+      position: relative;
+    }
+
+    .phone-frame {
+      width: 260px;
+      background: var(--ink);
+      border-radius: 40px;
+      padding: 12px;
+      box-shadow: var(--shadow-lg), 0 0 0 1px rgba(255,255,255,0.05) inset;
+    }
+
+    .phone-screen {
+      background: var(--cream);
+      border-radius: 30px;
+      overflow: hidden;
+      aspect-ratio: 9/19.5;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .phone-status {
+      background: var(--cream);
+      padding: 14px 20px 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .phone-time { font-size: 11px; font-weight: 700; color: var(--ink); }
+    .phone-icons { display: flex; gap: 4px; }
+    .phone-icon { width: 14px; height: 8px; background: var(--ink); border-radius: 2px; opacity: 0.7; }
+
+    .phone-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding: 8px 14px 16px;
+      gap: 10px;
+    }
+
+    .phone-progress-bar {
+      height: 4px;
+      background: var(--border);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+    .phone-progress-fill {
+      width: 33%;
+      height: 100%;
+      background: var(--brown);
+      border-radius: 2px;
+    }
+
+    .phone-card {
+      background: var(--white);
+      border-radius: 18px;
+      padding: 14px;
+      box-shadow: var(--shadow-sm);
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .phone-img-box {
+      width: 100%;
+      height: 90px;
+      background: var(--cream-dark);
+      border-radius: 12px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .phone-img-box svg { width: 56px; height: 56px; opacity: 0.35; }
+
+    .phone-word {
+      font-family: var(--font-serif);
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--ink);
+      letter-spacing: -0.02em;
+    }
+
+    .phone-audio-btn {
+      width: 100%;
+      background: var(--brown);
+      color: white;
+      border-radius: 10px;
+      padding: 8px 12px;
+      font-size: 11px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+    }
+
+    .phone-divider { width: 100%; height: 1px; background: var(--border); }
+
+    .phone-tigrinya {
+      font-size: 16px;
+      color: var(--green);
+      font-weight: 600;
+    }
+
+    .phone-audio-btn-green {
+      width: 100%;
+      background: var(--green);
+      color: white;
+      border-radius: 10px;
+      padding: 8px 12px;
+      font-size: 11px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+    }
+
+    .phone-next {
+      width: 100%;
+      background: var(--brown);
+      color: white;
+      border-radius: 14px;
+      padding: 12px;
+      font-size: 13px;
+      font-weight: 700;
+      text-align: center;
+    }
+
+    .phone-float-card {
+      position: absolute;
+      background: white;
+      border-radius: 16px;
+      padding: 12px 16px;
+      box-shadow: var(--shadow-lg);
+      border: 1px solid var(--border);
+    }
+
+    .float-left {
+      left: -80px;
+      bottom: 120px;
+      width: 140px;
+    }
+
+    .float-right {
+      right: -70px;
+      top: 100px;
+      width: 130px;
+    }
+
+    .float-label {
+      font-size: 10px;
+      color: var(--ink-muted);
+      font-weight: 500;
+      margin-bottom: 4px;
+    }
+
+    .float-value {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--ink);
+      line-height: 1;
+    }
+
+    .float-sub {
+      font-size: 10px;
+      color: var(--ink-muted);
+      margin-top: 2px;
+    }
+
+    .float-dot {
+      width: 8px;
+      height: 8px;
+      background: var(--green-light);
+      border-radius: 50%;
+      display: inline-block;
+      margin-right: 4px;
+    }
+
+    /* ── For Whom ───────────────────────────────────────────────────────────── */
+    .for-whom {
+      padding: 100px 0;
+      background: var(--cream-dark);
+    }
+
+    .for-whom-head {
+      text-align: center;
+      margin-bottom: 56px;
+    }
+
+    .for-whom-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .audience-card {
+      background: var(--white);
+      border-radius: var(--radius-lg);
+      padding: 36px 28px;
+      border: 1px solid var(--border);
+      transition: all var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .audience-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: var(--brown);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 300ms ease;
+    }
+
+    .audience-card:hover {
+      box-shadow: var(--shadow-md);
+      transform: translateY(-4px);
+    }
+
+    .audience-card:hover::before { transform: scaleX(1); }
+
+    .audience-icon {
+      width: 52px;
+      height: 52px;
+      background: rgba(139,94,60,0.1);
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+
+    .audience-icon svg { width: 26px; height: 26px; color: var(--brown); }
+
+    .audience-title {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--ink);
+      margin-bottom: 10px;
+      letter-spacing: -0.01em;
+    }
+
+    .audience-desc {
+      font-size: 15px;
+      color: var(--ink-muted);
+      line-height: 1.6;
+      margin-bottom: 20px;
+    }
+
+    .audience-use {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--green);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* ── How It Works ───────────────────────────────────────────────────────── */
+    .how {
+      padding: 100px 0;
+    }
+
+    .how-head {
+      text-align: center;
+      margin-bottom: 64px;
+    }
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 0;
+      position: relative;
+    }
+
+    .steps::before {
+      content: '';
+      position: absolute;
+      top: 28px;
+      left: 10%;
+      right: 10%;
+      height: 2px;
+      background: linear-gradient(to right, var(--brown), var(--green));
+      opacity: 0.25;
+      z-index: 0;
+    }
+
+    .step {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 0 12px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .step-num {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 15px;
+      margin-bottom: 20px;
+      border: 2px solid var(--border);
+      background: var(--cream);
+      transition: all var(--transition);
+    }
+
+    .step:nth-child(1) .step-num { background: var(--brown); color: white; border-color: var(--brown); }
+    .step:nth-child(2) .step-num { background: var(--brown-light); color: white; border-color: var(--brown-light); }
+    .step:nth-child(3) .step-num { background: #7A8C5E; color: white; border-color: #7A8C5E; }
+    .step:nth-child(4) .step-num { background: #4A8070; color: white; border-color: #4A8070; }
+    .step:nth-child(5) .step-num { background: var(--green); color: white; border-color: var(--green); }
+
+    .step-icon {
+      font-size: 22px;
+    }
+
+    .step-label {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--ink);
+      margin-bottom: 8px;
+    }
+
+    .step-desc {
+      font-size: 13px;
+      color: var(--ink-muted);
+      line-height: 1.5;
+    }
+
+    /* ── Features ───────────────────────────────────────────────────────────── */
+    .features {
+      padding: 100px 0;
+      background: var(--cream-dark);
+    }
+
+    .features-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+
+    .features-text .section-title { margin-bottom: 16px; }
+    .features-text .section-sub { margin-bottom: 40px; }
+
+    .features-list {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .feature-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 16px;
+      background: var(--white);
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border);
+      transition: all var(--transition);
+    }
+
+    .feature-item:hover {
+      border-color: var(--brown-light);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .feature-icon {
+      width: 36px;
+      height: 36px;
+      background: rgba(139,94,60,0.1);
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .feature-icon svg { width: 18px; height: 18px; color: var(--brown); }
+
+    .feature-text {}
+    .feature-name { font-size: 13px; font-weight: 700; color: var(--ink); margin-bottom: 2px; }
+    .feature-desc { font-size: 12px; color: var(--ink-muted); line-height: 1.4; }
+
+    /* Screen mockups */
+    .screens-visual {
+      display: flex;
+      gap: 16px;
+      align-items: flex-end;
+      justify-content: center;
+    }
+
+    .screen-phone {
+      background: var(--ink);
+      border-radius: 28px;
+      padding: 8px;
+      box-shadow: var(--shadow-lg);
+    }
+
+    .screen-phone.center { transform: scale(1.08); }
+
+    .screen-inner {
+      background: var(--cream);
+      border-radius: 22px;
+      overflow: hidden;
+      width: 130px;
+      aspect-ratio: 9/19.5;
+    }
+
+    .screen-inner.listen {
+      background: linear-gradient(160deg, #FAF7F2 0%, #F0EAE0 100%);
+      display: flex;
+      flex-direction: column;
+      padding: 12px;
+      gap: 8px;
+    }
+
+    .screen-listen-prompt {
+      font-size: 9px;
+      font-weight: 700;
+      color: var(--ink);
+      text-align: center;
+      line-height: 1.3;
+    }
+
+    .screen-audio-circle {
+      width: 44px;
+      height: 44px;
+      background: var(--brown);
+      border-radius: 50%;
+      margin: 4px auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .screen-options { display: flex; flex-direction: column; gap: 5px; }
+    .screen-option {
+      background: white;
+      border-radius: 7px;
+      padding: 6px 8px;
+      font-size: 8px;
+      font-weight: 600;
+      color: var(--ink);
+      border: 1px solid var(--border);
+    }
+    .screen-option.correct { background: rgba(45,106,79,0.1); border-color: var(--green); color: var(--green); }
+    .screen-option.wrong { background: rgba(200,60,60,0.08); border-color: #c83c3c; color: #c83c3c; }
+
+    .screen-inner.translate {
+      background: var(--cream);
+      display: flex;
+      flex-direction: column;
+      padding: 12px;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .screen-translate-q {
+      font-size: 8px;
+      font-weight: 700;
+      color: var(--ink);
+      text-align: center;
+      line-height: 1.3;
+    }
+
+    .screen-dutch-word {
+      font-family: var(--font-serif);
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--ink);
+    }
+
+    .screen-tig-options { display: flex; flex-direction: column; gap: 5px; width: 100%; }
+
+    .screen-tig-opt {
+      background: white;
+      border-radius: 7px;
+      padding: 6px 8px;
+      font-size: 8.5px;
+      font-weight: 500;
+      color: var(--ink);
+      border: 1px solid var(--border);
+      text-align: center;
+    }
+
+    .screen-inner.speak {
+      background: var(--cream);
+      display: flex;
+      flex-direction: column;
+      padding: 12px;
+      gap: 8px;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .screen-speak-word {
+      font-family: var(--font-serif);
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--ink);
+    }
+
+    .screen-speak-tig {
+      font-size: 12px;
+      color: var(--green);
+      font-weight: 600;
+    }
+
+    .screen-mic {
+      width: 48px;
+      height: 48px;
+      background: var(--brown);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 0 8px rgba(139,94,60,0.15);
+    }
+
+    .screen-speak-hint {
+      font-size: 8px;
+      color: var(--ink-muted);
+      text-align: center;
+    }
+
+    /* ── About ──────────────────────────────────────────────────────────────── */
+    .about {
+      padding: 100px 0;
+    }
+
+    .about-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+
+    .about-stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .stat-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 24px 20px;
+      transition: all var(--transition);
+    }
+
+    .stat-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+
+    .stat-num {
+      font-family: var(--font-serif);
+      font-size: 40px;
+      font-weight: 700;
+      color: var(--brown);
+      line-height: 1;
+      margin-bottom: 6px;
+      letter-spacing: -0.03em;
+    }
+
+    .stat-label { font-size: 13px; color: var(--ink-muted); font-weight: 500; line-height: 1.4; }
+
+    .about-text {}
+    .about-text .section-title { margin-bottom: 20px; }
+
+    .about-body {
+      font-size: 16px;
+      color: var(--ink-muted);
+      line-height: 1.75;
+      margin-bottom: 16px;
+    }
+
+    .about-quote {
+      border-left: 3px solid var(--brown);
+      padding: 12px 20px;
+      margin: 24px 0;
+      background: rgba(139,94,60,0.05);
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    }
+
+    .about-quote p {
+      font-style: italic;
+      font-size: 15px;
+      color: var(--ink-muted);
+      line-height: 1.7;
+    }
+
+    /* ── Contact ────────────────────────────────────────────────────────────── */
+    .contact {
+      padding: 100px 0;
+      background: var(--ink);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .contact::before {
+      content: '';
+      position: absolute;
+      top: -200px;
+      right: -100px;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(139,94,60,0.15) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .contact::after {
+      content: '';
+      position: absolute;
+      bottom: -150px;
+      left: -100px;
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, rgba(45,106,79,0.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .contact-inner {
+      text-align: center;
+      position: relative;
+      z-index: 1;
+      max-width: 640px;
+      margin: 0 auto;
+    }
+
+    .contact .section-label {
+      background: rgba(139,94,60,0.2);
+      color: var(--brown-light);
+    }
+
+    .contact .section-title { color: var(--white); margin-bottom: 20px; }
+
+    .contact-sub {
+      font-size: 18px;
+      color: rgba(255,255,255,0.6);
+      line-height: 1.65;
+      margin-bottom: 40px;
+    }
+
+    .contact-ctas {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn-white {
+      background: white;
+      color: var(--ink);
+      padding: 14px 28px;
+      border-radius: var(--radius-full);
+      font-size: 15px;
+      font-weight: 600;
+      transition: all var(--transition);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .btn-white:hover { background: var(--cream); transform: translateY(-1px); }
+
+    .btn-ghost {
+      background: rgba(255,255,255,0.1);
+      color: white;
+      border: 1.5px solid rgba(255,255,255,0.2);
+      padding: 14px 28px;
+      border-radius: var(--radius-full);
+      font-size: 15px;
+      font-weight: 600;
+      transition: all var(--transition);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .btn-ghost:hover { background: rgba(255,255,255,0.18); border-color: rgba(255,255,255,0.4); transform: translateY(-1px); }
+
+    /* ── Footer ─────────────────────────────────────────────────────────────── */
+    .footer {
+      padding: 32px 0;
+      border-top: 1px solid var(--border);
+      background: var(--cream);
+    }
+
+    .footer-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .footer-copy { font-size: 13px; color: var(--ink-muted); }
+
+    .footer-links {
+      display: flex;
+      gap: 20px;
+    }
+
+    .footer-link {
+      font-size: 13px;
+      color: var(--ink-muted);
+      transition: color var(--transition);
+    }
+    .footer-link:hover { color: var(--brown); }
+
+    /* ── SVG Icon helper ────────────────────────────────────────────────────── */
+    .icon { display: inline-block; vertical-align: middle; }
+
+    /* ── Responsive ─────────────────────────────────────────────────────────── */
+    @media (max-width: 960px) {
+      .hero-inner { grid-template-columns: 1fr; gap: 48px; }
+      .hero-visual { order: -1; }
+      .float-left, .float-right { display: none; }
+      .for-whom-grid { grid-template-columns: 1fr; }
+      .steps { grid-template-columns: repeat(3, 1fr); gap: 32px; }
+      .steps::before { display: none; }
+      .features-inner { grid-template-columns: 1fr; gap: 48px; }
+      .screens-visual { order: -1; }
+      .about-inner { grid-template-columns: 1fr; gap: 48px; }
+      .nav-links { display: none; }
+    }
+
+    @media (max-width: 600px) {
+      .container { padding: 0 16px; }
+      .steps { grid-template-columns: 1fr 1fr; }
+      .features-list { grid-template-columns: 1fr; }
+      .about-stats { grid-template-columns: 1fr 1fr; }
+      .phone-frame { width: 220px; }
+      .screens-visual { gap: 10px; }
+      .screen-inner { width: 100px; }
+    }
+
+    /* ── Reduced motion ─────────────────────────────────────────────────────── */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+      html { scroll-behavior: auto; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── Nav ──────────────────────────────────────────────────────────────── -->
+  <nav class="nav" role="navigation" aria-label="Hoofdnavigatie">
+    <a href="#" class="nav-logo">
+      <div class="nav-logo-icon">NL</div>
+      NL Training
+    </a>
+    <div class="nav-links" role="list">
+      <a href="#voor-wie" class="nav-link" role="listitem">Voor wie</a>
+      <a href="#hoe-werkt-het" class="nav-link" role="listitem">Hoe het werkt</a>
+      <a href="#functies" class="nav-link" role="listitem">Functies</a>
+      <a href="#over" class="nav-link" role="listitem">Over ons</a>
+    </div>
+    <a href="https://dutch-tigrinya.netlify.app" class="btn btn-primary nav-cta" target="_blank" rel="noopener">
+      Open de app
+    </a>
+  </nav>
+
+  <!-- ── Hero ─────────────────────────────────────────────────────────────── -->
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="container">
+      <div class="hero-inner">
+        <div class="hero-content">
+          <div class="hero-eyebrow">
+            <span class="hero-badge">
+              <svg width="10" height="10" viewBox="0 0 10 10" fill="currentColor" aria-hidden="true"><circle cx="5" cy="5" r="5"/></svg>
+              Gratis beschikbaar
+            </span>
+          </div>
+          <p class="hero-tigrinya">ትምህርቲ ኔዘርላንድኛ</p>
+          <h1 class="hero-title" id="hero-title">
+            Nederlands leren voor<br/>
+            <span>Tigrinya-sprekers</span>
+          </h1>
+          <p class="hero-sub">
+            Van dag één in Nederland — leer Nederlands in je eigen taal.
+            Een gratis app speciaal ontworpen voor nieuwkomers uit Eritrea en Ethiopië.
+          </p>
+          <div class="hero-ctas">
+            <a href="https://dutch-tigrinya.netlify.app" class="btn btn-primary" target="_blank" rel="noopener" aria-label="Open de NL Training app">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 3l14 9-14 9V3z"/></svg>
+              Open de app
+            </a>
+            <a href="#contact" class="btn btn-outline">
+              Meer informatie
+            </a>
+          </div>
+          <div class="hero-trust">
+            <span class="hero-trust-text">Geschikt voor</span>
+            <div class="trust-badges">
+              <span class="trust-badge">COA</span>
+              <span class="trust-badge">ISK Scholen</span>
+              <span class="trust-badge">Gemeente</span>
+              <span class="trust-badge">Vluchtelingenwerk</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-visual" aria-hidden="true">
+          <div class="phone-wrap">
+            <!-- Floating stats -->
+            <div class="phone-float-card float-left">
+              <div class="float-label">Woorden geleerd</div>
+              <div class="float-value">306</div>
+              <div class="float-sub"><span class="float-dot"></span>in 5 lessen</div>
+            </div>
+            <div class="phone-float-card float-right">
+              <div class="float-label">Oefeningen</div>
+              <div class="float-value">30</div>
+              <div class="float-sub">per les</div>
+            </div>
+
+            <!-- Phone -->
+            <div class="phone-frame">
+              <div class="phone-screen">
+                <div class="phone-status">
+                  <span class="phone-time">9:41</span>
+                  <div class="phone-icons">
+                    <div class="phone-icon" style="width:18px; height:8px; border-radius:2px; background:var(--ink); opacity:0.6"></div>
+                    <div class="phone-icon" style="width:10px; height:8px; border-radius:2px; background:var(--ink); opacity:0.6"></div>
+                  </div>
+                </div>
+                <div class="phone-content">
+                  <div style="display:flex; justify-content:space-between; align-items:center; font-size:9px; color:var(--ink-muted); font-weight:600;">
+                    <span>1 / 30</span>
+                  </div>
+                  <div class="phone-progress-bar">
+                    <div class="phone-progress-fill"></div>
+                  </div>
+                  <div class="phone-card">
+                    <div class="phone-img-box">
+                      <!-- Person waving SVG placeholder -->
+                      <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="40" cy="20" r="12" fill="var(--brown)" opacity="0.4"/>
+                        <path d="M20 65 Q40 40 60 65" stroke="var(--brown)" stroke-width="4" fill="none" opacity="0.3"/>
+                        <path d="M55 30 Q65 20 68 12" stroke="var(--brown)" stroke-width="3.5" stroke-linecap="round" fill="none" opacity="0.5"/>
+                      </svg>
+                    </div>
+                    <div class="phone-word">Hallo</div>
+                    <div class="phone-audio-btn">
+                      <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
+                      Luister / ስማዕ
+                    </div>
+                    <div class="phone-divider"></div>
+                    <div class="phone-tigrinya">ሰላም</div>
+                    <div class="phone-audio-btn-green">
+                      <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
+                      ስማዕ / Luister
+                    </div>
+                    <div style="font-size:9px; color:var(--ink-muted); font-style:italic;">Hello</div>
+                  </div>
+                  <div class="phone-next">Volgende / ኺሕጥም</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── For Whom ──────────────────────────────────────────────────────────── -->
+  <section class="for-whom" id="voor-wie" aria-labelledby="voor-wie-title">
+    <div class="container">
+      <div class="for-whom-head">
+        <span class="section-label">Voor wie</span>
+        <h2 class="section-title" id="voor-wie-title">Ontworpen voor de<br/>praktijk van integratie</h2>
+        <p class="section-sub" style="margin: 16px auto 0; text-align:center;">
+          NL Training werkt naadloos in de dagelijkse realiteit van opvang, onderwijs en inburgering.
+        </p>
+      </div>
+      <div class="for-whom-grid">
+
+        <article class="audience-card">
+          <div class="audience-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+          </div>
+          <h3 class="audience-title">COA Opvanglocaties</h3>
+          <p class="audience-desc">
+            Bewoners kunnen zelfstandig oefenen op hun eigen telefoon, op elk moment van de dag.
+            Geen docent nodig — de app begeleidt stap voor stap.
+          </p>
+          <div class="audience-use">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            Zelfstandig leren in de opvang
+          </div>
+        </article>
+
+        <article class="audience-card">
+          <div class="audience-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
+          </div>
+          <h3 class="audience-title">ISK Scholen</h3>
+          <p class="audience-desc">
+            Gebruik de app als huiswerktool of ter versterking van klassikale lessen.
+            Leerlingen oefenen 30 interacties per les, in hun eigen moedertaal.
+          </p>
+          <div class="audience-use">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            Huiswerk & klassikale ondersteuning
+          </div>
+        </article>
+
+        <article class="audience-card">
+          <div class="audience-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+          </div>
+          <h3 class="audience-title">Gemeente Inburgering</h3>
+          <p class="audience-desc">
+            Aanvulling op het inburgeringstraject. Nieuwkomers bouwen basiswoordenschat op
+            vóór de taallessen beginnen — zo starten ze sterker.
+          </p>
+          <div class="audience-use">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            Voorbereiding op inburgeringstraject
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ── How It Works ──────────────────────────────────────────────────────── -->
+  <section class="how" id="hoe-werkt-het" aria-labelledby="how-title">
+    <div class="container">
+      <div class="how-head">
+        <span class="section-label">Hoe het werkt</span>
+        <h2 class="section-title" id="how-title">Van kennismaking tot spreken —<br/>in 30 stappen</h2>
+        <p class="section-sub" style="margin:16px auto 0; text-align:center;">
+          Elke les volgt dezelfde opbouw: eerst leren, dan oefenen, dan spreken.
+        </p>
+      </div>
+      <div class="steps">
+
+        <div class="step">
+          <div class="step-num">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+          </div>
+          <div class="step-label">Kennismaking</div>
+          <div class="step-desc">Woord + foto + audio in beide talen. Leer het woord in context.</div>
+        </div>
+
+        <div class="step">
+          <div class="step-num">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
+          </div>
+          <div class="step-label">Luister & Kies</div>
+          <div class="step-desc">Hoor het woord — kies het juiste antwoord uit vier opties.</div>
+        </div>
+
+        <div class="step">
+          <div class="step-num">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+          </div>
+          <div class="step-label">Herken de Foto</div>
+          <div class="step-desc">Zie de AI-afbeelding — noem het bijbehorende Nederlandse woord.</div>
+        </div>
+
+        <div class="step">
+          <div class="step-num">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 8l6 6 6-6"></path></svg>
+          </div>
+          <div class="step-label">Vertaal</div>
+          <div class="step-desc">Zie een Nederlands woord — kies de Tigrinya-vertaling.</div>
+        </div>
+
+        <div class="step">
+          <div class="step-num">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg>
+          </div>
+          <div class="step-label">Spreek na</div>
+          <div class="step-desc">Spreek het woord uit — AI luistert en geeft feedback.</div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Features ──────────────────────────────────────────────────────────── -->
+  <section class="features" id="functies" aria-labelledby="features-title">
+    <div class="container">
+      <div class="features-inner">
+        <div class="features-text">
+          <span class="section-label">Functies</span>
+          <h2 class="section-title" id="features-title">Alles wat een<br/>nieuwkomer nodig heeft</h2>
+          <p class="section-sub">
+            Gebouwd met één doel: de taalbarrière zo snel mogelijk doorbreken.
+          </p>
+          <div class="features-list">
+
+            <div class="feature-item">
+              <div class="feature-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
+              </div>
+              <div class="feature-text">
+                <div class="feature-name">306 woorden & zinnen</div>
+                <div class="feature-desc">Verspreid over thema's als wonen, werk, gezondheidszorg en meer</div>
+              </div>
+            </div>
+
+            <div class="feature-item">
+              <div class="feature-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+              </div>
+              <div class="feature-text">
+                <div class="feature-name">AI-gegenereerde foto's</div>
+                <div class="feature-desc">306 realistische afbeeldingen, één per woord, gegenereerd met fal.ai</div>
+              </div>
+            </div>
+
+            <div class="feature-item">
+              <div class="feature-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
+              </div>
+              <div class="feature-text">
+                <div class="feature-name">Tigrinya audio</div>
+                <div class="feature-desc">Elk woord te beluisteren in het Nederlands én Tigrinya</div>
+              </div>
+            </div>
+
+            <div class="feature-item">
+              <div class="feature-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path></svg>
+              </div>
+              <div class="feature-text">
+                <div class="feature-name">Spraakherkenning</div>
+                <div class="feature-desc">Spreek woorden na — Whisper AI geeft directe feedback</div>
+              </div>
+            </div>
+
+            <div class="feature-item">
+              <div class="feature-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 6v16l7-4 8 4 7-4V2l-7 4-8-4-7 4z"></path><line x1="8" y1="2" x2="8" y2="18"></line><line x1="16" y1="6" x2="16" y2="22"></line></svg>
+              </div>
+              <div class="feature-text">
+                <div class="feature-name">Werkt offline (PWA)</div>
+                <div class="feature-desc">Installeerbaar op elke telefoon, ook zonder stabiele wifi</div>
+              </div>
+            </div>
+
+            <div class="feature-item">
+              <div class="feature-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+              </div>
+              <div class="feature-text">
+                <div class="feature-name">Volledig gratis</div>
+                <div class="feature-desc">Geen abonnement, geen account nodig — gewoon openen en leren</div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Screen mockups -->
+        <div class="screens-visual" aria-hidden="true">
+          <!-- Listen screen -->
+          <div class="screen-phone">
+            <div class="screen-inner listen">
+              <div class="screen-listen-prompt">Welk woord hoor je?<br/>ምንታይ ቃል ትሰምዕ?</div>
+              <div class="screen-audio-circle">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
+              </div>
+              <div class="screen-options">
+                <div class="screen-option wrong">Mijn naam is...</div>
+                <div class="screen-option">Hoe gaat het?</div>
+                <div class="screen-option correct">Goedemorgen</div>
+                <div class="screen-option">Dag</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Translate screen (center, bigger) -->
+          <div class="screen-phone center">
+            <div class="screen-inner translate">
+              <div class="screen-translate-q">Wat betekent dit?<br/>እንታይ ትርጉሙ?</div>
+              <div class="screen-dutch-word">Hallo</div>
+              <div class="screen-tig-options">
+                <div class="screen-tig-opt">ሰላም</div>
+                <div class="screen-tig-opt">ቻወ</div>
+                <div class="screen-tig-opt">ከመይ ሓዲርካ?</div>
+                <div class="screen-tig-opt">ስምካ ምን'ዩ?</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Speak screen -->
+          <div class="screen-phone">
+            <div class="screen-inner speak">
+              <div style="font-size:8px; color:var(--ink-muted); text-align:center; font-weight:600;">Spreek na / ዛረብ</div>
+              <div class="screen-speak-word">Dag</div>
+              <div class="screen-speak-tig">ቻወ</div>
+              <div class="screen-mic">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path></svg>
+              </div>
+              <div class="screen-speak-hint">Geen score —<br/>voor vertrouwen</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ── About ─────────────────────────────────────────────────────────────── -->
+  <section class="about" id="over" aria-labelledby="about-title">
+    <div class="container">
+      <div class="about-inner">
+        <div class="about-stats">
+          <div class="stat-card">
+            <div class="stat-num">306</div>
+            <div class="stat-label">Woorden & zinnen in de app</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num">30</div>
+            <div class="stat-label">Oefeningen per les</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num">5</div>
+            <div class="stat-label">Oefentypen per les</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num">100%</div>
+            <div class="stat-label">Gratis & geen account nodig</div>
+          </div>
+        </div>
+
+        <div class="about-text">
+          <span class="section-label">Over NL Training</span>
+          <h2 class="section-title" id="about-title">Gemaakt voor<br/>mensen, niet voor cijfers</h2>
+          <p class="about-body">
+            NL Training is ontwikkeld vanuit de praktijk — voor Tigrinya-sprekende nieuwkomers
+            die Nederland als hun nieuwe thuis beginnen te ontdekken. De taalbarrière is één
+            van de grootste obstakels bij integratie. Met deze app proberen we die drempel
+            zo laag mogelijk te maken.
+          </p>
+          <div class="about-quote">
+            <p>
+              "Van de eerste dag in de opvang tot de inburgeringsklas — elk woord dat een
+              nieuwkomer leert, opent een deur. NL Training is die eerste sleutel."
+            </p>
+          </div>
+          <p class="about-body">
+            De app gebruikt AI-gegenereerde afbeeldingen, spraakherkenning via Whisper,
+            en Tigrinya audio om een volledige leerervaring te bieden — helemaal gratis,
+            op elk apparaat, ook zonder wifi.
+          </p>
+          <a href="https://dutch-tigrinya.netlify.app" class="btn btn-primary" target="_blank" rel="noopener" style="margin-top:8px;">
+            Probeer de app
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Contact ────────────────────────────────────────────────────────────── -->
+  <section class="contact" id="contact" aria-labelledby="contact-title">
+    <div class="contact-inner container">
+      <span class="section-label">Contact</span>
+      <h2 class="section-title" id="contact-title">Gebruik NL Training<br/>in uw organisatie</h2>
+      <p class="contact-sub">
+        Bent u COA-medewerker, ISK-docent of werkt u bij een gemeente?
+        Neem contact op om te bespreken hoe NL Training ingezet kan worden.
+      </p>
+      <div class="contact-ctas">
+        <a href="mailto:info@nltraining.nl" class="btn-white" aria-label="Stuur een e-mail naar info@nltraining.nl">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+          Stuur een e-mail
+        </a>
+        <a href="https://dutch-tigrinya.netlify.app" class="btn-ghost" target="_blank" rel="noopener">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M5 3l14 9-14 9V3z"/></svg>
+          Open de app
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Footer ─────────────────────────────────────────────────────────────── -->
+  <footer class="footer" role="contentinfo">
+    <div class="container">
+      <div class="footer-inner">
+        <div class="footer-copy">
+          © 2025 NL Training — ትምህርቲ ኔዘርላንድኛ
+        </div>
+        <nav class="footer-links" aria-label="Voetnav">
+          <a href="https://dutch-tigrinya.netlify.app" class="footer-link" target="_blank" rel="noopener">Open de app</a>
+          <a href="mailto:info@nltraining.nl" class="footer-link">Contact</a>
+        </nav>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Smooth scroll for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', e => {
+        const target = document.querySelector(a.getAttribute('href'));
+        if (target) {
+          e.preventDefault();
+          const navH = 80;
+          const top = target.getBoundingClientRect().top + window.scrollY - navH;
+          window.scrollTo({ top, behavior: 'smooth' });
+        }
+      });
+    });
+
+    // Nav shadow on scroll
+    const nav = document.querySelector('.nav');
+    window.addEventListener('scroll', () => {
+      nav.style.boxShadow = window.scrollY > 20
+        ? '0 8px 32px rgba(26,18,8,0.12)'
+        : '0 4px 16px rgba(26,18,8,0.10)';
+    }, { passive: true });
+  </script>
+</body>
+</html>
